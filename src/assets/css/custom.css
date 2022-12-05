@@ -2,6 +2,14 @@ img{
     max-height: 60vh;
     min-height: 60vh;
 }
+img:hover {
+  -webkit-transform: scale(1.25) !important;
+  -moz-transform: scale(1.25) !important;
+  -o-transform: scale(1.25) !important;
+  transform: scale(1.25) !important;
+  position: relative;
+  z-index: 2;
+}
 
 .minImg {
     max-height: 10vh;
@@ -34,15 +42,15 @@ img{
 }
 
 .modal {
-    display: none; /* Por defecto, estar· oculto */
-    position: fixed; /* PosiciÛn fija */
-    z-index: 1; /* Se situar· por encima de otros elementos de la p·gina*/
-    padding-top: 200px; /* El contenido estar· situado a 200px de la parte superior */
+    display: none; /* Por defecto, estar√° oculto */
+    position: fixed; /* Posici√≥n fija */
+    z-index: 1; /* Se situar√° por encima de otros elementos de la p√°gina*/
+    padding-top: 200px; /* El contenido estar√° situado a 200px de la parte superior */
     left: 0;
     top: 0;
     width: 100%; /* Ancho completo */
     height: 100%; /* Algura completa */
-    overflow: auto; /* Se activar· el scroll si es necesario */
+    overflow: auto; /* Se activar√° el scroll si es necesario */
     background-color: rgba(0,0,0,0.5); /* Color negro con opacidad del 50% */
 }
 

@@ -18,13 +18,14 @@ export class AppComponent {
   smashCounter: number = 0;
   passCounter: number = 0;
   totalCounter: number = 0;
+  url: string = "https://tan-plume-book.glitch.me"
 
   init(): any {
-    this.httpGetAsync("http://tan-plume-book.glitch.me/folders", (response: string) => {
+    this.httpGetAsync( this.url + "/folders", (response: string) => {
       console.log(response);
       this.folders = JSON.parse(response);
       this.folders.forEach(folder => {
-        this.httpGetAsync("http://tan-plume-book.glitch.me/images?folder=" + folder, (response: string) => {
+        this.httpGetAsync( this.url + "/images?folder=" + folder, (response: string) => {
           var responseJson: [] = JSON.parse(response);
           let responseImages: Img[] = [];
           responseJson.forEach(image => {
@@ -46,59 +47,85 @@ export class AppComponent {
   }
 
   smash() {
-    this.addSmashed(this.imagesList[this.folderSelected].images[this.imagesList[this.folderSelected].count].base64);
+    this.addSmashed(this.imagesList[this.folderSelected].images[this.imagesList[this.folderSelected].count]);
     this.smashCounter += 1;
     this.totalCounter += 1;
     this.imagesList[this.folderSelected].count += 1;
   }
 
   pass() {
-    this.addPassed(this.imagesList[this.folderSelected].images[this.imagesList[this.folderSelected].count].base64);
+    this.addPassed(this.imagesList[this.folderSelected].images[this.imagesList[this.folderSelected].count]);
     this.passCounter += 1;
     this.totalCounter += 1;
     this.imagesList[this.folderSelected].count += 1;
   }
 
-  addSmashed(base64:string) {
+  addSmashed(element: Img) {
     let imgContainer = document.getElementById("smashedImg");
     let elem = document.createElement("img");
     elem.addEventListener("click", function () {
       var modal = document.getElementById("ventanaModal");
       let modalImg: HTMLElement | null = document.getElementById("modalImg");
+      let modalImgName: HTMLElement | null = document.getElementById("modalImgName");
       if (modalImg) {
-        modalImg.setAttribute('src', base64);
+        modalImg.setAttribute('src', element.base64);
+      }
+      if (modalImgName) {
+        modalImgName.innerHTML = element.name.split('.')[0];
       }
       if (modal) {
         modal.style.display = "block";
       }
     });
-    elem.setAttribute("src", base64);
+    elem.setAttribute("src", element.base64);
     elem.setAttribute("class", "minImg");
-    elem.setAttribute("href", base64);
+    elem.setAttribute("href", element.base64);
     if (imgContainer) {
       imgContainer.appendChild(elem);
     }
   }
 
-  addPassed(base64: string) {
+  clearCounter() {
+    this.passCounter = 0;
+    this.smashCounter = 0;
+    this.count = 0;
+    this.totalCounter = 0;
+    Object.keys(this.imagesList).forEach(key => {
+      this.imagesList[key].count = 0;
+    })
+    let divImgSmash = document.getElementById("smashedImg");
+    let divImgPass = document.getElementById("passedImg");
+    if (divImgSmash) divImgSmash.innerHTML = "";
+    if (divImgPass) divImgPass.innerHTML = "";
+  }
+
+  addPassed(element: Img) {
     let imgContainer = document.getElementById("passedImg");
     let elem = document.createElement("img");
     elem.addEventListener("click", function () {
       var modal = document.getElementById("ventanaModal");
       let modalImg: HTMLElement | null = document.getElementById("modalImg");
+      let modalImgName: HTMLElement | null = document.getElementById("modalImgName");
       if (modalImg) {
-        modalImg.setAttribute('src', base64);
+        modalImg.setAttribute('src', element.base64);
+      }
+      if (modalImgName) {
+        modalImgName.innerHTML = element.name.split('.')[0];
       }
       if (modal) {
         modal.style.display = "block";
       }
     });
-    elem.setAttribute("src", base64);
+    elem.setAttribute("src", element.base64);
     elem.setAttribute("class", "minImg");
-    elem.setAttribute("href", base64);
+    elem.setAttribute("href", element.base64);
     if (imgContainer) {
       imgContainer.appendChild(elem);
     }
+  }
+
+  getName(name: string) {
+    return name.split('.')[0];
   }
 
 
